@@ -1,5 +1,7 @@
 # Neo Layer 3 QMK Keymap for Keychron K3 Pro
 
+![](neoqmk.jpg)
+
 The ergonomics of the neo keyboard layout are great. The installation story on multiple OS not so much. 
 This QMK keymap implements a variation of neo layer 3, to have easy access to special characters for software development.
 
