@@ -2,7 +2,7 @@
 
 ![](neoqmk.jpg)
 
-The ergonomics of the neo keyboard layout are great. The installation story on multiple OS not so much. 
+The [neo keyboard layout](https://neo-layout.org/Layouts/neoqwertz/#die-ebenen) has an amazing layer 3 setup. Installing it on multiple OS sucks though.
 This QMK keymap implements a variation of neo layer 3, to have easy access to special characters for software development.
 
 Reference the official guide on [https://docs.qmk.fm/](https://docs.qmk.fm/).
