@@ -34,15 +34,26 @@ enum layers {
     WIN_L3,
 };
 
-// custom keycodes to handle OSX symbols, when using "sendstring_german.h" over its "_osx" version, as the symbols are on different positions for DE_ISO osx
-#define DE_LBRC_OSX A(DE_5)    // [
-#define DE_RBRC_OSX A(DE_6)    // ]
-#define DE_LCBR_OSX A(DE_8)    // {
-#define DE_RCBR_OSX A(DE_9)    // }
-#define DE_BSLS_OSX S(A(DE_7)) // (backslash)
-#define DE_PIPE_OSX A(DE_7)    // |
-#define DE_STIL_OSX S(A(DE_8)) // ~
-#define DE_AT_OSX A(DE_L)      // @
+// mapping keymap_german.h to keymap_german_osx.h
+//
+//                                      WIN                         OSX
+//   [              DE_LBRC             ALGR(DE_8)                  A(DE_5)
+//   ]              DE_RBRC             ALGR(DE_9)                  A(DE_6)
+//   {              DE_LCBR             ALGR(DE_7)                  A(DE_8)
+//   }              DE_RCBR             ALGR(DE_0)                  A(DE_9)
+//   (backslash     DE_BSLS             ALGR(DE_SS))                S(A(DE_7))
+//   ~              DE_TILD             ALGR(DE_PLUS)               A(DE_N)
+//   |              DE_PIPE             ALGR(DE_LABK)               A(DE_7)
+//   @              DE_AT               ALGR(DE_Q)                  A(DE_L)
+//   €              DE_EURO             ALGR(DE_E)                  A(DE_E)
+
+#define DE_LBRC_OSX     A(DE_5)      // [
+#define DE_RBRC_OSX     A(DE_6)      // ]
+#define DE_LCBR_OSX     A(DE_8)      // {
+#define DE_RCBR_OSX     A(DE_9)      // }
+#define DE_BSLS_OSX     S(A(DE_7))   // (backslash)
+#define DE_PIPE_OSX     A(DE_7)      // |
+#define DE_AT_OSX       A(DE_L)      // @
 
 enum custom_keycodes {
     BACKTICK = SAFE_RANGE, // `
