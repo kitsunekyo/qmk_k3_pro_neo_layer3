@@ -1,6 +1,8 @@
-# Keychron K3 Pro Neo Layer 3 QMK Keymap
+# Keychron K3 Pro Neo Layer 3 QMK Keymap (DE)
 
 Reference the official guide on [https://docs.qmk.fm/](https://docs.qmk.fm/) to learn how to use qmk.
+
+> Note: The keymaps assume you use a DE_ISO keyboard and a DE keyboard layout in your OS.
 
 ## Features
 
