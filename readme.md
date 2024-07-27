@@ -1,13 +1,36 @@
-# Neo Layer 3 QMK Keymap for Keychron K3 Pro
+# Keychron K3 Pro Neo Layer 3 QMK Keymap
+
+Reference the official guide on [https://docs.qmk.fm/](https://docs.qmk.fm/) to learn how to use qmk.
+
+## Features
+
+### Neo's Layer 3
+
+The [neo keyboard layout](https://neo-layout.org/Layouts/neoqwertz/#die-ebenen) has an amazing layer 3. Installing it on multiple OS sucks though.
+This QMK keymap implements a variation of neo layer 3 to have easy access to special characters for software development.
+
+Hold `Mod3` or `M3` to access common dev symbols as shown below.
 
 ![](neoqmk.jpg)
 
-The [neo keyboard layout](https://neo-layout.org/Layouts/neoqwertz/#die-ebenen) has an amazing layer 3 setup. Installing it on multiple OS sucks though.
-This QMK keymap implements a variation of neo layer 3, to have easy access to special characters for software development.
+> Note: Blank keys just send whatever keycode is below layer_3.
 
-Reference the official guide on [https://docs.qmk.fm/](https://docs.qmk.fm/).
+The right `M3` uses `layer_tap`, so that it will output `KC_BSLS` as per default if tapped but switches to layer 3 when held.
 
-## Building Firmware for K3 Pro
+**Changes to neo's layer 3**
+
+- `;` was moved to the `KC_L` position for easier access
+- space acts as as `KC_ESC` for better vim ergonomics
+
+### Caps Word
+
+Pressing `left_shift` and `right_shift` at the same time will enable "caps word" mode. For the next word, everything will be in caps. So you can easily write `MY_CONSTANT` without jumping between modifiers, and having to hold shift.
+
+Typing `-` will automatically output a `_` character.
+
+> Customize which characters delimit a word or are automatically shifted in `caps_word_press_user`.
+
+## Building the firmware for K3 Pro
 
 Keychron isnt great when it comes to QMK support. While they love to market their keyboards as QMK supported, you have to manually build the firmware from their fork.
 
@@ -23,3 +46,25 @@ make git-submodule
 ```
 
 After that, I could continue with the guide [https://docs.qmk.fm/newbs_building_firmware](https://docs.qmk.fm/newbs_building_firmware)
+
+Configure build environment defaults
+
+```bash
+qmk config user.keyboard=keychron/k3_pro/iso/rgb
+qmk config user.keymap=<github_username>
+```
+
+Create a new keymap
+
+```bash
+# creates a new keymap with your github_username in keychron/k3_pro/iso/rgb/keymaps
+qmk new-keymap
+```
+
+Compile
+
+```bash
+qmk compile -kb keychron/k3_pro/iso/rgb -km kitsunekyo
+```
+
+Then flash with QMK Toolbox
