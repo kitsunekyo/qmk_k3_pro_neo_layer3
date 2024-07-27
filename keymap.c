@@ -55,6 +55,7 @@ enum layers {
 #define DE_PIPE_OSX     A(DE_7)      // |
 #define DE_AT_OSX       A(DE_L)      // @
 
+// custom keycodes to handle deadkeys
 enum custom_keycodes {
     BACKTICK = SAFE_RANGE, // `
     CIRC,                  // ^
