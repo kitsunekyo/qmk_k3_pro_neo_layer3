@@ -22,7 +22,6 @@ The right `M3` uses `layer_tap`, so that it will output `KC_BSLS` as per default
 **Changes to neo's layer 3**
 
 - `;` was moved to the `KC_L` position for easier access
-- space acts as as `KC_ESC` for better vim ergonomics
 
 ### Caps Word
 
