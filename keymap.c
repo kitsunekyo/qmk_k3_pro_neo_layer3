@@ -34,18 +34,20 @@ enum layers {
     WIN_L3,
 };
 
-// mapping keymap_german.h to keymap_german_osx.h
-//
-//                                      WIN                         OSX
-//   [              DE_LBRC             ALGR(DE_8)                  A(DE_5)
-//   ]              DE_RBRC             ALGR(DE_9)                  A(DE_6)
-//   {              DE_LCBR             ALGR(DE_7)                  A(DE_8)
-//   }              DE_RCBR             ALGR(DE_0)                  A(DE_9)
-//   (backslash     DE_BSLS             ALGR(DE_SS))                S(A(DE_7))
-//   ~              DE_TILD             ALGR(DE_PLUS)               A(DE_N)
-//   |              DE_PIPE             ALGR(DE_LABK)               A(DE_7)
-//   @              DE_AT               ALGR(DE_Q)                  A(DE_L)
-//   €              DE_EURO             ALGR(DE_E)                  A(DE_E)
+/**
+ * map keymap_german.h to keymap_german_osx.h
+ * so that i have the same keys when switching from osx to win
+ *                                    WIN                         OSX
+ * [              DE_LBRC             ALGR(DE_8)                  A(DE_5)
+ * ]              DE_RBRC             ALGR(DE_9)                  A(DE_6)
+ * {              DE_LCBR             ALGR(DE_7)                  A(DE_8)
+ * }              DE_RCBR             ALGR(DE_0)                  A(DE_9)
+ * (backslash)    DE_BSLS             ALGR(DE_SS))                S(A(DE_7))
+ * ~ (deadkey)    DE_TILD             ALGR(DE_PLUS)               A(DE_N)
+ * |              DE_PIPE             ALGR(DE_LABK)               A(DE_7)
+ * @              DE_AT               ALGR(DE_Q)                  A(DE_L)
+ * €              DE_EURO             ALGR(DE_E)                  A(DE_E)
+ */
 
 #define DE_LBRC_OSX     A(DE_5)      // [
 #define DE_RBRC_OSX     A(DE_6)      // ]
@@ -57,9 +59,9 @@ enum layers {
 
 // custom keycodes to handle deadkeys
 enum custom_keycodes {
-    BACKTICK = SAFE_RANGE, // `
-    CIRC,                  // ^
-    TILD_OSX,              // ~
+    BACKTICK = SAFE_RANGE,           // `
+    CIRC,                            // ^
+    TILD_OSX,                        // ~
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -125,12 +127,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      _______,      _______,     _______,                                _______,                                _______,  _______,  _______,  _______,  _______,  _______),
 
 [MAC_L3] = LAYOUT_iso_85(
-     _______,      _______,     _______,  _______,      _______,      _______,     _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
-     _______,      _______,     _______,  _______,      _______,      _______,     _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
-     _______,      _______,     DE_UNDS,  DE_LBRC_OSX,  DE_RBRC_OSX,  CIRC,        DE_EXLM,  DE_LABK,  DE_RABK,  DE_EQL,   DE_AMPR,  _______,  _______,  _______,            _______,
-     _______,      DE_BSLS_OSX, DE_SLSH,  DE_LCBR_OSX,  DE_RCBR_OSX,  DE_ASTR,     DE_QUES,  DE_LPRN,  DE_RPRN,  DE_SCLN,  DE_COLN,  DE_AT_OSX,          _______,            _______,
-     _______,      _______,     DE_HASH,  DE_DLR,       DE_PIPE_OSX,  TILD_OSX,    BACKTICK, DE_PLUS,  DE_PERC,  DE_DQUO,  DE_QUOT,  _______,            _______,  _______,  _______,
-     _______,      _______,     _______,                                           _______,                                 _______,  _______,  _______,  _______,  _______,  _______),
+     _______,      _______,     _______,  _______,     _______,      _______,     _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
+     _______,      _______,     _______,  _______,     _______,      _______,     _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
+     _______,      _______,     DE_UNDS,  DE_LBRC_OSX, DE_RBRC_OSX,  CIRC,        DE_EXLM,  DE_LABK,  DE_RABK,  DE_EQL,   DE_AMPR,  _______,  _______,  _______,            _______,
+     _______,      DE_BSLS_OSX, DE_SLSH,  DE_LCBR_OSX, DE_RCBR_OSX,  DE_ASTR,     DE_QUES,  DE_LPRN,  DE_RPRN,  DE_SCLN,  DE_COLN,  DE_AT_OSX,          _______,            _______,
+     _______,      _______,     DE_HASH,  DE_DLR,      DE_PIPE_OSX,  TILD_OSX,    BACKTICK, DE_PLUS,  DE_PERC,  DE_DQUO,  DE_QUOT,  _______,            _______,  _______,  _______,
+     _______,      _______,     _______,                                           _______,                                _______,  _______,  _______,  _______,  _______,  _______),
 
 [WIN_BASE] = LAYOUT_iso_85(
      KC_ESC,       KC_BRID,     KC_BRIU,  KC_TASK,  KC_FILE,  RGB_VAD,  RGB_VAI,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,    KC_VOLU,  KC_PSCR,   KC_DEL,      RGB_MOD,
@@ -154,6 +156,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      _______,      _______,     DE_UNDS,  DE_LBRC,  DE_RBRC,  CIRC,     DE_EXLM,  DE_LABK,  DE_RABK,  DE_EQL,   DE_AMPR,  _______,  _______,  _______,            _______,
      _______,      DE_BSLS,     DE_SLSH,  DE_LCBR,  DE_RCBR,  DE_ASTR,  DE_QUES,  DE_LPRN,  DE_RPRN,  DE_SCLN,  DE_COLN,  DE_AT,              _______,            _______,
      _______,      _______,     DE_HASH,  DE_DLR,   DE_PIPE,  DE_TILD,  BACKTICK, DE_PLUS,  DE_PERC,  DE_DQUO,  DE_QUOT,  _______,            _______,  _______,  _______,
-     _______,      _______,     _______,                                _______,                                 _______,  _______,  _______,  _______,  _______,  _______),
+     _______,      _______,     _______,                                _______,                                _______,  _______,  _______,  _______,  _______,  _______),
 };
 
