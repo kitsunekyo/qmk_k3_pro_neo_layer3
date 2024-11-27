@@ -69,3 +69,5 @@ qmk compile -kb keychron/k3_pro/iso/rgb -km kitsunekyo
 ```
 
 Then flash with QMK Toolbox
+
+Open the compiled file at `\\wsl.localhost\Ubuntu\home\aspieslechner\qmk_firmware\keychron_k3_pro_iso_rgb_kitsunekyo.bin`. Connect the keyboard in bootloader mode by unplugging it, holding the ESC key while plugging in and letting go of esc after keyboard is connected.
