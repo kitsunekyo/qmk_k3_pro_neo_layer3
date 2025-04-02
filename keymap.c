@@ -31,6 +31,7 @@ enum layers {
     WIN_FN,
     MAC_L3,
     WIN_L3,
+    GAMING,
 };
 
 /**
@@ -47,7 +48,6 @@ enum layers {
  * @              DE_AT               ALGR(DE_Q)                  A(DE_L)
  * €              DE_EURO             ALGR(DE_E)                  A(DE_E)
  */
-
 #define MAC_LBRC    A(DE_5)      // [
 #define MAC_RBRC    A(DE_6)      // ]
 #define MAC_LCBR    A(DE_8)      // {
@@ -56,29 +56,37 @@ enum layers {
 #define MAC_PIPE    A(DE_7)      // |
 #define MAC_AT      A(DE_L)      // @
 
-// custom keycodes to handle deadkeys
+// HOME ROW MODS
+
+#define HOME_A LGUI_T(KC_A)
+#define HOME_S LALT_T(KC_S)
+#define HOME_D LSFT_T(KC_D)
+#define HOME_F LCTL_T(KC_F)
+#define HOME_J RCTL_T(KC_J)
+#define HOME_K RSFT_T(KC_K)
+#define HOME_L LALT_T(KC_L)
+#define HOME_SCLN RGUI_T(KC_SCLN)
+
+// basic
+// #define HOME_A KC_A
+// #define HOME_S KC_S
+// #define HOME_D KC_D
+// #define HOME_F KC_F
+// #define HOME_J KC_J
+// #define HOME_K KC_K
+// #define HOME_L KC_L
+// #define HOME_SCLN KC_SCLN
+
+#define LSFT_ESC MT(MOD_LSFT, KC_ESC)
+
 enum custom_keycodes {
     BACKTICK = SAFE_RANGE,           // `
     CIRC,                            // ^
     MAC_TILDE,                       // ~
 };
 
-// Left-hand home row mods
-#define HOME_A LGUI_T(KC_A)
-#define HOME_S LALT_T(KC_S)
-#define HOME_D LSFT_T(KC_D)
-#define HOME_F LCTL_T(KC_F)
-
-// Right-hand home row mods
-#define HOME_J RCTL_T(KC_J)
-#define HOME_K RSFT_T(KC_K)
-#define HOME_L LALT_T(KC_L)
-#define HOME_SCLN RGUI_T(KC_SCLN)
-
-#define LSFT_ESC MT(MOD_LSFT, KC_ESC)
-
 // immediately send deadkey characters
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     switch (keycode) {
         case BACKTICK:
             if (record->event.pressed) {
@@ -95,7 +103,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING(SS_LOPT("n") SS_TAP(X_SPC));
             }
             return false;
-
         default:
             return true;
     }
@@ -105,13 +112,12 @@ bool caps_word_press_user(uint16_t keycode) {
     switch (keycode) {
         // Keycodes that continue Caps Word, with shift applied.
         case KC_A ... KC_Z:
-        case KC_MINS:
+        case KC_SLSH:
             add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
             return true;
         // Keycodes that continue Caps Word, without shifting.
         case KC_1 ... KC_0:
         case KC_BSPC:
-        case KC_SLSH:
         case KC_DEL:
         case KC_UNDS:
             return true;
@@ -120,27 +126,52 @@ bool caps_word_press_user(uint16_t keycode) {
     }
 }
 
+// hack to prevent HOLD_ON_OTHER_KEY_PRESS
+bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+    return false;
+}
+
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    for (uint8_t i = led_min; i < led_max; i++) {
+        switch(get_highest_layer(layer_state|default_layer_state)) {
+            case WIN_BASE:
+                rgb_matrix_set_color(i, RGB_BLUE);
+                break;
+            case MAC_BASE:
+                rgb_matrix_set_color(i, RGB_SPRINGGREEN);
+                break;
+            case GAMING:
+                rgb_matrix_set_color(i, RGB_RED);
+                break;
+            default:
+                rgb_matrix_set_color(i, RGB_ORANGE);
+                break;
+        }
+    }
+    return false;
+}
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-//    ┌───────────────────┬────────┬────────┬────────┬────────┬─────────┬─────────┬────────┬────────┬────────┬───────────┬────────────┬───────────────┬──────┬──────┬─────────┐
-//    │        esc        │  bRID  │  bRIU  │  mCTL  │  lPAD  │ RGB_VAD │ RGB_VAI │  mprv  │  mply  │  mnxt  │   mute    │    vold    │     volu      │ sNAP │ del  │ RGB_MOD │
-//    ├───────────────────┼────────┼────────┼────────┼────────┼─────────┼─────────┼────────┼────────┼────────┼───────────┼────────────┼───────────────┼──────┴──────┼─────────┤
-//    │         `         │   1    │   2    │   3    │   4    │    5    │    6    │   7    │   8    │   9    │     0     │     -      │       =       │    bspc     │  pgup   │
-//    ├───────────────────┼────────┼────────┼────────┼────────┼─────────┼─────────┼────────┼────────┼────────┼───────────┼────────────┼───────────────┼─────────────┼─────────┤
-//    │ MT(MOD_HYPR, tab) │   q    │   w    │   e    │   r    │    t    │    y    │   u    │   i    │   o    │     p     │     [      │       ]       │     ent     │  pgdn   │
-//    ├───────────────────┼────────┼────────┼────────┼────────┼─────────┼─────────┼────────┼────────┼────────┼───────────┼────────────┼───────────────┼─────────────┼─────────┤
-//    │    MO(MAC_L3)     │ HOME_A │ HOME_S │ HOME_D │ HOME_F │    g    │    h    │ HOME_J │ HOME_K │ HOME_L │ HOME_SCLN │     '      │ LT(MAC_L3, \) │             │  home   │
-//    ├───────────────────┼────────┼────────┼────────┼────────┼─────────┼─────────┼────────┼────────┼────────┼───────────┼────────────┼───────────────┴──────┬──────┼─────────┤
-//    │     LSFT_ESC      │  iso\  │   z    │   x    │   c    │    v    │    b    │   n    │   m    │   ,    │     .     │     /      │         rsft         │  up  │   end   │
-//    ├───────────────────┼────────┼────────┼────────┼────────┴─────────┴─────────┴────────┴────────┼────────┼───────────┼────────────┼───────────────┬──────┼──────┼─────────┤
-//    │       lctl        │  lalt  │  lgui  │        │               LT(MAC_L3, spc)                │        │   rgui    │ MO(MAC_FN) │     rctl      │ left │ down │  rght   │
-//    └───────────────────┴────────┴────────┘        └──────────────────────────────────────────────┘        └───────────┴────────────┴───────────────┴──────┴──────┴─────────┘
+//    ┌────────────┬──────┬──────┬──────┬──────┬─────────┬─────────┬──────┬──────┬──────┬──────┬────────────┬───────────────┬──────┬──────┬─────────┐
+//    │    esc     │ bRID │ bRIU │ mCTL │ lPAD │ RGB_VAD │ RGB_VAI │ mprv │ mply │ mnxt │ mute │    vold    │     volu      │ sNAP │ del  │ RGB_MOD │
+//    ├────────────┼──────┼──────┼──────┼──────┼─────────┼─────────┼──────┼──────┼──────┼──────┼────────────┼───────────────┼──────┴──────┼─────────┤
+//    │     `      │  1   │  2   │  3   │  4   │    5    │    6    │  7   │  8   │  9   │  0   │     -      │       =       │    bspc     │  pgup   │
+//    ├────────────┼──────┼──────┼──────┼──────┼─────────┼─────────┼──────┼──────┼──────┼──────┼────────────┼───────────────┼─────────────┼─────────┤
+//    │    tab     │  q   │  w   │  e   │  r   │    t    │    y    │  u   │  i   │  o   │  p   │     [      │       ]       │     ent     │  pgdn   │
+//    ├────────────┼──────┼──────┼──────┼──────┼─────────┼─────────┼──────┼──────┼──────┼──────┼────────────┼───────────────┼─────────────┼─────────┤
+//    │ MO(MAC_L3) │  a   │  s   │  d   │  f   │    g    │    h    │  j   │  k   │  l   │  ;   │     '      │ LT(MAC_L3, \) │             │  home   │
+//    ├────────────┼──────┼──────┼──────┼──────┼─────────┼─────────┼──────┼──────┼──────┼──────┼────────────┼───────────────┴──────┬──────┼─────────┤
+//    │    lsft    │ iso\ │  z   │  x   │  c   │    v    │    b    │  n   │  m   │  ,   │  .   │     /      │         rsft         │  up  │   end   │
+//    ├────────────┼──────┼──────┼──────┼──────┴─────────┴─────────┴──────┴──────┼──────┼──────┼────────────┼───────────────┬──────┼──────┼─────────┤
+//    │    lctl    │ lalt │ lgui │      │                  spc                   │      │ rgui │ MO(MAC_FN) │     rctl      │ left │ down │  rght   │
+//    └────────────┴──────┴──────┘      └────────────────────────────────────────┘      └──────┴────────────┴───────────────┴──────┴──────┴─────────┘
 [MAC_BASE] = LAYOUT_iso_85(
-  KC_ESC               , KC_BRID , KC_BRIU , KC_MCTL , KC_LPAD , RGB_VAD , RGB_VAI , KC_MPRV , KC_MPLY , KC_MNXT , KC_MUTE   , KC_VOLD    , KC_VOLU             , KC_SNAP , KC_DEL  , RGB_MOD,
-  KC_GRV               , KC_1    , KC_2    , KC_3    , KC_4    , KC_5    , KC_6    , KC_7    , KC_8    , KC_9    , KC_0      , KC_MINS    , KC_EQL              ,           KC_BSPC , KC_PGUP,
-  MT(MOD_HYPR, KC_TAB) , KC_Q    , KC_W    , KC_E    , KC_R    , KC_T    , KC_Y    , KC_U    , KC_I    , KC_O    , KC_P      , KC_LBRC    , KC_RBRC             ,            KC_ENT , KC_PGDN,
-  MO(MAC_L3)           , HOME_A  , HOME_S  , HOME_D  , HOME_F  , KC_G    , KC_H    , HOME_J  , HOME_K  , HOME_L  , HOME_SCLN , KC_QUOT    , LT(MAC_L3, KC_BSLS) ,                     KC_HOME,
-  LSFT_ESC             , KC_NUBS , KC_Z    , KC_X    , KC_C    , KC_V    , KC_B    , KC_N    , KC_M    , KC_COMM , KC_DOT    , KC_SLSH    ,                       KC_RSFT , KC_UP   , KC_END ,
-  KC_LCTL              , KC_LALT , KC_LGUI ,                         LT(MAC_L3, KC_SPC)                ,           KC_RGUI   , MO(MAC_FN) , KC_RCTL             , KC_LEFT , KC_DOWN , KC_RGHT
+  KC_ESC     , KC_BRID , KC_BRIU , KC_MCTL , KC_LPAD , RGB_VAD , RGB_VAI , KC_MPRV , KC_MPLY , KC_MNXT , KC_MUTE , KC_VOLD    , KC_VOLU             , KC_SNAP , KC_DEL  , RGB_MOD,
+  KC_GRV     , KC_1    , KC_2    , KC_3    , KC_4    , KC_5    , KC_6    , KC_7    , KC_8    , KC_9    , KC_0    , KC_MINS    , KC_EQL              ,           KC_BSPC , KC_PGUP,
+  KC_TAB     , KC_Q    , KC_W    , KC_E    , KC_R    , KC_T    , KC_Y    , KC_U    , KC_I    , KC_O    , KC_P    , KC_LBRC    , KC_RBRC             ,            KC_ENT , KC_PGDN,
+  MO(MAC_L3) , KC_A    , KC_S    , KC_D    , KC_F    , KC_G    , KC_H    , KC_J    , KC_K    , KC_L    , KC_SCLN , KC_QUOT    , LT(MAC_L3, KC_BSLS) ,                     KC_HOME,
+  KC_LSFT    , KC_NUBS , KC_Z    , KC_X    , KC_C    , KC_V    , KC_B    , KC_N    , KC_M    , KC_COMM , KC_DOT  , KC_SLSH    ,                       KC_RSFT , KC_UP   , KC_END ,
+  KC_LCTL    , KC_LALT , KC_LGUI ,                               KC_SPC                      ,           KC_RGUI , MO(MAC_FN) , KC_RCTL             , KC_LEFT , KC_DOWN , KC_RGHT
 ),
 
 //    ┌─────────┬──────────┬─────────┬─────────┬─────────┬─────────┬─────────┬─────────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────────┐
@@ -187,26 +218,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______ , _______ , _______ ,                                  _______                       ,           _______ , _______ , _______ , _______ , _______ , _______
 ),
 
-//    ┌────────────┬────────┬────────┬────────┬────────┬────┬────┬────────┬────────┬────────┬───────────┬────────────┬───────────────┬──────┬──────┬─────────┐
-//    │    esc     │   f1   │   f2   │   f3   │   f4   │ f5 │ f6 │   f7   │   f8   │   f9   │    f10    │    f11     │      f12      │ pscr │ del  │ RGB_MOD │
-//    ├────────────┼────────┼────────┼────────┼────────┼────┼────┼────────┼────────┼────────┼───────────┼────────────┼───────────────┼──────┴──────┼─────────┤
-//    │     `      │   1    │   2    │   3    │   4    │ 5  │ 6  │   7    │   8    │   9    │     0     │     -      │       =       │    bspc     │  pgup   │
-//    ├────────────┼────────┼────────┼────────┼────────┼────┼────┼────────┼────────┼────────┼───────────┼────────────┼───────────────┼─────────────┼─────────┤
-//    │    tab     │   q    │   w    │   e    │   r    │ t  │ y  │   u    │   i    │   o    │     p     │     [      │       ]       │     ent     │  pgdn   │
-//    ├────────────┼────────┼────────┼────────┼────────┼────┼────┼────────┼────────┼────────┼───────────┼────────────┼───────────────┼─────────────┼─────────┤
-//    │ MO(WIN_L3) │ HOME_A │ HOME_S │ HOME_D │ HOME_F │ g  │ h  │ HOME_J │ HOME_K │ HOME_L │ HOME_SCLN │     '      │ LT(WIN_L3, \) │             │  home   │
-//    ├────────────┼────────┼────────┼────────┼────────┼────┼────┼────────┼────────┼────────┼───────────┼────────────┼───────────────┴──────┬──────┼─────────┤
-//    │  LSFT_ESC  │  iso\  │   z    │   x    │   c    │ v  │ b  │   n    │   m    │   ,    │     .     │     /      │         rsft         │  up  │   end   │
-//    ├────────────┼────────┼────────┼────────┼────────┴────┴────┴────────┴────────┼────────┼───────────┼────────────┼───────────────┬──────┼──────┼─────────┤
-//    │    lctl    │  lgui  │  lalt  │        │          LT(WIN_L3, spc)           │        │   ralt    │ MO(WIN_FN) │     rctl      │ left │ down │  rght   │
-//    └────────────┴────────┴────────┘        └────────────────────────────────────┘        └───────────┴────────────┴───────────────┴──────┴──────┴─────────┘
+//    ┌────────────┬────────┬────────┬────────┬────────┬────┬────┬────────┬────────┬────────┬───────────┬────────────┬───────────────┬────────────┬──────┬─────────┐
+//    │    esc     │   f1   │   f2   │   f3   │   f4   │ f5 │ f6 │   f7   │   f8   │   f9   │    f10    │    f11     │      f12      │ TG(GAMING) │ del  │ RGB_MOD │
+//    ├────────────┼────────┼────────┼────────┼────────┼────┼────┼────────┼────────┼────────┼───────────┼────────────┼───────────────┼────────────┴──────┼─────────┤
+//    │     `      │   1    │   2    │   3    │   4    │ 5  │ 6  │   7    │   8    │   9    │     0     │     -      │       =       │       bspc        │  pgup   │
+//    ├────────────┼────────┼────────┼────────┼────────┼────┼────┼────────┼────────┼────────┼───────────┼────────────┼───────────────┼───────────────────┼─────────┤
+//    │    tab     │   q    │   w    │   e    │   r    │ t  │ y  │   u    │   i    │   o    │     p     │     [      │       ]       │        ent        │  pgdn   │
+//    ├────────────┼────────┼────────┼────────┼────────┼────┼────┼────────┼────────┼────────┼───────────┼────────────┼───────────────┼───────────────────┼─────────┤
+//    │ MO(WIN_L3) │ HOME_A │ HOME_S │ HOME_D │ HOME_F │ g  │ h  │ HOME_J │ HOME_K │ HOME_L │ HOME_SCLN │     '      │ LT(WIN_L3, \) │                   │  home   │
+//    ├────────────┼────────┼────────┼────────┼────────┼────┼────┼────────┼────────┼────────┼───────────┼────────────┼───────────────┴────────────┬──────┼─────────┤
+//    │    lsft    │  iso\  │   z    │   x    │   c    │ v  │ b  │   n    │   m    │   ,    │     .     │     /      │            rsft            │  up  │   end   │
+//    ├────────────┼────────┼────────┼────────┼────────┴────┴────┴────────┴────────┼────────┼───────────┼────────────┼───────────────┬────────────┼──────┼─────────┤
+//    │    lctl    │  lgui  │  lalt  │        │                spc                 │        │   ralt    │ MO(WIN_FN) │     rctl      │    left    │ down │  rght   │
+//    └────────────┴────────┴────────┘        └────────────────────────────────────┘        └───────────┴────────────┴───────────────┴────────────┴──────┴─────────┘
 [WIN_BASE] = LAYOUT_iso_85(
-  KC_ESC     , KC_F1   , KC_F2   , KC_F3  , KC_F4  , KC_F5 , KC_F6 , KC_F7  , KC_F8  , KC_F9   , KC_F10    , KC_F11     , KC_F12              , KC_PSCR , KC_DEL  , RGB_MOD,
-  KC_GRV     , KC_1    , KC_2    , KC_3   , KC_4   , KC_5  , KC_6  , KC_7   , KC_8   , KC_9    , KC_0      , KC_MINS    , KC_EQL              ,           KC_BSPC , KC_PGUP,
-  KC_TAB     , KC_Q    , KC_W    , KC_E   , KC_R   , KC_T  , KC_Y  , KC_U   , KC_I   , KC_O    , KC_P      , KC_LBRC    , KC_RBRC             ,            KC_ENT , KC_PGDN,
-  MO(WIN_L3) , HOME_A  , HOME_S  , HOME_D , HOME_F , KC_G  , KC_H  , HOME_J , HOME_K , HOME_L  , HOME_SCLN , KC_QUOT    , LT(WIN_L3, KC_BSLS) ,                     KC_HOME,
-  LSFT_ESC   , KC_NUBS , KC_Z    , KC_X   , KC_C   , KC_V  , KC_B  , KC_N   , KC_M   , KC_COMM , KC_DOT    , KC_SLSH    ,                       KC_RSFT , KC_UP   , KC_END ,
-  KC_LCTL    , KC_LGUI , KC_LALT ,                     LT(WIN_L3, KC_SPC)            ,           KC_RALT   , MO(WIN_FN) , KC_RCTL             , KC_LEFT , KC_DOWN , KC_RGHT
+  KC_ESC     , KC_F1   , KC_F2   , KC_F3  , KC_F4  , KC_F5 , KC_F6 , KC_F7  , KC_F8  , KC_F9   , KC_F10    , KC_F11     , KC_F12              , TG(GAMING) , KC_DEL  , RGB_MOD,
+  KC_GRV     , KC_1    , KC_2    , KC_3   , KC_4   , KC_5  , KC_6  , KC_7   , KC_8   , KC_9    , KC_0      , KC_MINS    , KC_EQL              ,              KC_BSPC , KC_PGUP,
+  KC_TAB     , KC_Q    , KC_W    , KC_E   , KC_R   , KC_T  , KC_Y  , KC_U   , KC_I   , KC_O    , KC_P      , KC_LBRC    , KC_RBRC             ,               KC_ENT , KC_PGDN,
+  MO(WIN_L3) , HOME_A  , HOME_S  , HOME_D , HOME_F , KC_G  , KC_H  , HOME_J , HOME_K , HOME_L  , HOME_SCLN , KC_QUOT    , LT(WIN_L3, KC_BSLS) ,                        KC_HOME,
+  KC_LSFT    , KC_NUBS , KC_Z    , KC_X   , KC_C   , KC_V  , KC_B  , KC_N   , KC_M   , KC_COMM , KC_DOT    , KC_SLSH    ,                          KC_RSFT , KC_UP   , KC_END ,
+  KC_LCTL    , KC_LGUI , KC_LALT ,                           KC_SPC                  ,           KC_RALT   , MO(WIN_FN) , KC_RCTL             , KC_LEFT    , KC_DOWN , KC_RGHT
 ),
 
 //    ┌─────────┬──────────┬─────────┬─────────┬─────────┬─────────┬─────────┬─────────┬──────┬──────┬──────┬──────┬──────┬─────┬─────┬─────────┐
@@ -251,6 +282,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______ , DE_BSLS , DE_SLSH , DE_LCBR , DE_RCBR , DE_ASTR , DE_QUES  , DE_LPRN , DE_RPRN , DE_SCLN , DE_COLN , DE_AT   , _______ ,                     _______,
   _______ , _______ , DE_HASH , DE_DLR  , DE_PIPE , DE_TILD , BACKTICK , DE_PLUS , DE_PERC , DE_DQUO , DE_QUOT , _______ ,           _______ , _______ , _______,
   _______ , _______ , _______ ,                               _______                      ,           _______ , _______ , _______ , _______ , _______ , _______
+),
+
+//    ┌──────┬──────┬──────┬────┬────┬────┬────┬────┬────┬────┬──────┬─────┬──────┬────────────┬──────┬─────────┐
+//    │ esc  │  f1  │  f2  │ f3 │ f4 │ f5 │ f6 │ f7 │ f8 │ f9 │ f10  │ f11 │ f12  │ TG(GAMING) │ del  │ RGB_MOD │
+//    ├──────┼──────┼──────┼────┼────┼────┼────┼────┼────┼────┼──────┼─────┼──────┼────────────┴──────┼─────────┤
+//    │  `   │  1   │  2   │ 3  │ 4  │ 5  │ 6  │ 7  │ 8  │ 9  │  0   │  -  │  =   │       bspc        │  pgup   │
+//    ├──────┼──────┼──────┼────┼────┼────┼────┼────┼────┼────┼──────┼─────┼──────┼───────────────────┼─────────┤
+//    │ tab  │  q   │  w   │ e  │ r  │ t  │ y  │ u  │ i  │ o  │  p   │  [  │  ]   │        ent        │  pgdn   │
+//    ├──────┼──────┼──────┼────┼────┼────┼────┼────┼────┼────┼──────┼─────┼──────┼───────────────────┼─────────┤
+//    │ caps │  a   │  s   │ d  │ f  │ g  │ h  │ j  │ k  │ l  │  ;   │  '  │  \   │                   │  home   │
+//    ├──────┼──────┼──────┼────┼────┼────┼────┼────┼────┼────┼──────┼─────┼──────┴────────────┬──────┼─────────┤
+//    │ lsft │ iso\ │  z   │ x  │ c  │ v  │ b  │ n  │ m  │ ,  │  .   │  /  │       rsft        │  up  │   end   │
+//    ├──────┼──────┼──────┼────┼────┴────┴────┴────┴────┼────┼──────┼─────┼──────┬────────────┼──────┼─────────┤
+//    │ lctl │ lgui │ lalt │    │          spc           │    │ ralt │     │ rctl │    left    │ down │  rght   │
+//    └──────┴──────┴──────┘    └────────────────────────┘    └──────┴─────┴──────┴────────────┴──────┴─────────┘
+[GAMING] = LAYOUT_iso_85(
+  KC_ESC  , KC_F1   , KC_F2   , KC_F3 , KC_F4 , KC_F5 , KC_F6 , KC_F7 , KC_F8 , KC_F9   , KC_F10  , KC_F11  , KC_F12  , TG(GAMING) , KC_DEL  , RGB_MOD,
+  KC_GRV  , KC_1    , KC_2    , KC_3  , KC_4  , KC_5  , KC_6  , KC_7  , KC_8  , KC_9    , KC_0    , KC_MINS , KC_EQL  ,              KC_BSPC , KC_PGUP,
+  KC_TAB  , KC_Q    , KC_W    , KC_E  , KC_R  , KC_T  , KC_Y  , KC_U  , KC_I  , KC_O    , KC_P    , KC_LBRC , KC_RBRC ,               KC_ENT , KC_PGDN,
+  KC_CAPS , KC_A    , KC_S    , KC_D  , KC_F  , KC_G  , KC_H  , KC_J  , KC_K  , KC_L    , KC_SCLN , KC_QUOT , KC_BSLS ,                        KC_HOME,
+  KC_LSFT , KC_NUBS , KC_Z    , KC_X  , KC_C  , KC_V  , KC_B  , KC_N  , KC_M  , KC_COMM , KC_DOT  , KC_SLSH ,              KC_RSFT , KC_UP   , KC_END ,
+  KC_LCTL , KC_LGUI , KC_LALT ,                        KC_SPC                 ,           KC_RALT , _______ , KC_RCTL , KC_LEFT    , KC_DOWN , KC_RGHT
 )
 };
 

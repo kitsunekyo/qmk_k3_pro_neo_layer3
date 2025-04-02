@@ -21,13 +21,31 @@ The right `M3` uses `layer_tap`, so that it will output `KC_BSLS` as per default
 
 **Changes to neo's layer 3**
 
-- `;` was moved to the `KC_L` position for easier access
+- `;` was moved to the `KC_L` position for easier access and because that would be the US ansi position.
 
 ### Caps Word
 
 Pressing `left_shift` and `right_shift` at the same time will enable "caps word" mode. For the next word, everything will be in caps. So you can easily write `MY_CONSTANT` without jumping between modifiers, and having to hold shift.
 
 Typing `-` will automatically output a `_` character.
+
+### Home Row Mods
+
+- `A S D F` are mapped to `Meta Alt Shift Ctrl`
+- `J K L Ö` are mapped to `Ctrl Shift Alt Meta` (mirrored)
+
+### Gaming Layer
+
+Pressing KC_PSCR (print screen) will change into a vanilla, no frills gaming layer for better gaming.
+
+### Layer Lighting
+
+The current layer defines the rgb matrix color.
+
+- Windows: Blue
+- Gaming: Red
+- Mac: Green
+- Extra layers like the Neo layer: Orange
 
 > Customize which characters delimit a word or are automatically shifted in `caps_word_press_user`.
 
