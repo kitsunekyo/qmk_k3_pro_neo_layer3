@@ -121,11 +121,6 @@ bool caps_word_press_user(uint16_t keycode) {
     }
 }
 
-// hack to prevent HOLD_ON_OTHER_KEY_PRESS
-bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
-    return false;
-}
-
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     for (uint8_t i = led_min; i < led_max; i++) {
         switch(get_highest_layer(layer_state|default_layer_state)) {

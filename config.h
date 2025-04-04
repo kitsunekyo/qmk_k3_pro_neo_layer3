@@ -8,8 +8,6 @@
 #define CHORDIAL_HOLD
 #define PERMISSIVE_HOLD
 #define HOLD_ON_OTHER_KEY_PRESS_PER_KEY
-// combos
-#define COMBO_COUNT 1
 
 // caps-word
 #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD

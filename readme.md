@@ -2,6 +2,8 @@
 
 My custom keychron k3 pro ISO_DE qmk firmware.
 
+> Based off this keychron qmk fork branch [https://github.com/Keychron/qmk_firmware/tree/wls_2025q1](https://github.com/Keychron/qmk_firmware/tree/wls_2025q1), as instructed by keychron's lokher on [this comment](https://github.com/Keychron/qmk_firmware/issues/368#issuecomment-2767824519).
+
 #### Prerequisites:
 
 - The keymaps are built for ISO keyboard layout using DE keyboard layout in your OS.
