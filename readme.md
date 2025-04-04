@@ -14,7 +14,7 @@ This qmk setup builds on multiple layers to provide better ergonomics for my dai
 
 > Note: Blank keys just send whatever keycode is below layer_3.
 
-![](neoqmk.jpg)
+![](screenshot.jpg)
 
 ### L3: Development Symbols
 
