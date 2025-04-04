@@ -27,9 +27,12 @@
 enum layers {
     MAC_BASE,
     MAC_FN,
-    MAC_L3,
     WIN_BASE,
     WIN_FN,
+    /**
+     * dont move layers above, as the keychron OS switch relies on the index
+     */
+    MAC_L3,
     WIN_L3,
     UTIL_L4,
     GAMING,
