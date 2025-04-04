@@ -12,7 +12,7 @@ My custom keychron k3 pro ISO_DE qmk firmware.
 
 This qmk setup builds on multiple layers to provide better ergonomics for my daily use. These layers are accessible through holding certain keys in the base layers for both mac and windows.
 
-> Note: Blank keys just send whatever keycode is below layer_3.
+> Note: Blank keys just send whatever keycode on the layer below.
 
 ![](screenshot.jpg)
 
