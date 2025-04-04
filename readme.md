@@ -1,6 +1,6 @@
 # Keychron K3 Pro Neo Layer 3 QMK Keymap (ISO_DE)
 
-Reference the official guide on to learn how to use qmk.
+My custom keychron k3 pro ISO_DE qmk firmware.
 
 #### Prerequisites:
 
