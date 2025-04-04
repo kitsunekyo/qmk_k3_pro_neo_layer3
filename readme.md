@@ -90,8 +90,8 @@ I installed the prerequisites and ran this
 ```bash
 git clone https://github.com/Keychron/qmk_firmware.git
 cd qmk_firmware
-git checkout bluetooth_playground
-make git-submodule
+git checkout bluetooth_playground # or their new branch `wls_2025q1`
+make git-submodule # remember to rerun this when changing to their `wls_2025q1` branch
 ```
 
 After that, I could continue with the guide [https://docs.qmk.fm/newbs_building_firmware](https://docs.qmk.fm/newbs_building_firmware)
