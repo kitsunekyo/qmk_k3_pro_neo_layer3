@@ -3,8 +3,7 @@
  * @see {@link https://docs.qmk.fm/config_options#behaviors-that-can-be-configured}
  */
 #define DYNAMIC_KEYMAP_LAYER_COUNT 8
-#define TAPPING_TERM 280
-// #define QUICK_TAP_TERM 100
+#define TAPPING_TERM 200
 #define CHORDIAL_HOLD
 #define PERMISSIVE_HOLD
 #define HOLD_ON_OTHER_KEY_PRESS_PER_KEY
