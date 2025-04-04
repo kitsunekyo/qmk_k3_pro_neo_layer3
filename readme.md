@@ -31,12 +31,14 @@ Typing `-` will automatically output a `_` character.
 
 ### Home Row Mods
 
-- `A S D F` are mapped to `Meta Alt Shift Ctrl`
-- `J K L Ö` are mapped to `Ctrl Shift Alt Meta` (mirrored)
+Holding home row keys will trigger modifiers.
+
+- `A S D F` | `J K L Ö`
+- `GUI ALT SHIFT CTRL` | `CTRL SHIFT ALT GUI`
 
 ### Gaming Layer
 
-Pressing KC_PSCR (print screen) will change into a vanilla, no frills gaming layer for better gaming.
+On Windows: Pressing KC_PSCR (print screen) will change into a vanilla, no frills gaming layer for better gaming.
 
 ### Layer Lighting
 
@@ -46,8 +48,6 @@ The current layer defines the rgb matrix color.
 - Gaming: Red
 - Mac: Green
 - Extra layers like the Neo layer: Orange
-
-> Customize which characters delimit a word or are automatically shifted in `caps_word_press_user`.
 
 ## Building the firmware for K3 Pro
 

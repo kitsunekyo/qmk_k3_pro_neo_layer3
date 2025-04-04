@@ -27,14 +27,16 @@
 enum layers {
     MAC_BASE,
     MAC_FN,
+    MAC_L3,
     WIN_BASE,
     WIN_FN,
-    MAC_L3,
     WIN_L3,
+    UTIL_L4,
     GAMING,
 };
 
 /**
+ * DE MAC SYMBOLS
  * map keymap_german.h to keymap_german_osx.h
  * so that we have the same keys when switching from osx to win
  *                                    WIN                         MAC
@@ -57,7 +59,6 @@ enum layers {
 #define MAC_AT      A(DE_L)      // @
 
 // HOME ROW MODS
-
 #define HOME_A LGUI_T(KC_A)
 #define HOME_S LALT_T(KC_S)
 #define HOME_D LSFT_T(KC_D)
@@ -67,16 +68,7 @@ enum layers {
 #define HOME_L LALT_T(KC_L)
 #define HOME_SCLN RGUI_T(KC_SCLN)
 
-// basic
-// #define HOME_A KC_A
-// #define HOME_S KC_S
-// #define HOME_D KC_D
-// #define HOME_F KC_F
-// #define HOME_J KC_J
-// #define HOME_K KC_K
-// #define HOME_L KC_L
-// #define HOME_SCLN KC_SCLN
-
+// left shift tab esc
 #define LSFT_ESC MT(MOD_LSFT, KC_ESC)
 
 enum custom_keycodes {
@@ -143,6 +135,9 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             case GAMING:
                 rgb_matrix_set_color(i, RGB_RED);
                 break;
+            case UTIL_L4:
+                rgb_matrix_set_color(i, RGB_PINK);
+                break;
             default:
                 rgb_matrix_set_color(i, RGB_ORANGE);
                 break;
@@ -163,7 +158,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //    ├────────────┼──────┼──────┼──────┼──────┼─────────┼─────────┼──────┼──────┼──────┼──────┼────────────┼───────────────┴──────┬──────┼─────────┤
 //    │    lsft    │ iso\ │  z   │  x   │  c   │    v    │    b    │  n   │  m   │  ,   │  .   │     /      │         rsft         │  up  │   end   │
 //    ├────────────┼──────┼──────┼──────┼──────┴─────────┴─────────┴──────┴──────┼──────┼──────┼────────────┼───────────────┬──────┼──────┼─────────┤
-//    │    lctl    │ lalt │ lgui │      │                  spc                   │      │ rgui │ MO(MAC_FN) │     rctl      │ left │ down │  rght   │
+//    │    lctl    │ lalt │ lgui │      │            LT(UTIL_L4, spc)            │      │ rgui │ MO(MAC_FN) │     rctl      │ left │ down │  rght   │
 //    └────────────┴──────┴──────┘      └────────────────────────────────────────┘      └──────┴────────────┴───────────────┴──────┴──────┴─────────┘
 [MAC_BASE] = LAYOUT_iso_85(
   KC_ESC     , KC_BRID , KC_BRIU , KC_MCTL , KC_LPAD , RGB_VAD , RGB_VAI , KC_MPRV , KC_MPLY , KC_MNXT , KC_MUTE , KC_VOLD    , KC_VOLU             , KC_SNAP , KC_DEL  , RGB_MOD,
@@ -171,7 +166,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TAB     , KC_Q    , KC_W    , KC_E    , KC_R    , KC_T    , KC_Y    , KC_U    , KC_I    , KC_O    , KC_P    , KC_LBRC    , KC_RBRC             ,            KC_ENT , KC_PGDN,
   MO(MAC_L3) , KC_A    , KC_S    , KC_D    , KC_F    , KC_G    , KC_H    , KC_J    , KC_K    , KC_L    , KC_SCLN , KC_QUOT    , LT(MAC_L3, KC_BSLS) ,                     KC_HOME,
   KC_LSFT    , KC_NUBS , KC_Z    , KC_X    , KC_C    , KC_V    , KC_B    , KC_N    , KC_M    , KC_COMM , KC_DOT  , KC_SLSH    ,                       KC_RSFT , KC_UP   , KC_END ,
-  KC_LCTL    , KC_LALT , KC_LGUI ,                               KC_SPC                      ,           KC_RGUI , MO(MAC_FN) , KC_RCTL             , KC_LEFT , KC_DOWN , KC_RGHT
+  KC_LCTL    , KC_LALT , KC_LGUI ,                         LT(UTIL_L4, KC_SPC)               ,           KC_RGUI , MO(MAC_FN) , KC_RCTL             , KC_LEFT , KC_DOWN , KC_RGHT
 ),
 
 //    ┌─────────┬──────────┬─────────┬─────────┬─────────┬─────────┬─────────┬─────────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────────┐
@@ -229,7 +224,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //    ├────────────┼────────┼────────┼────────┼────────┼────┼────┼────────┼────────┼────────┼───────────┼────────────┼───────────────┴────────────┬──────┼─────────┤
 //    │    lsft    │  iso\  │   z    │   x    │   c    │ v  │ b  │   n    │   m    │   ,    │     .     │     /      │            rsft            │  up  │   end   │
 //    ├────────────┼────────┼────────┼────────┼────────┴────┴────┴────────┴────────┼────────┼───────────┼────────────┼───────────────┬────────────┼──────┼─────────┤
-//    │    lctl    │  lgui  │  lalt  │        │                spc                 │        │   ralt    │ MO(WIN_FN) │     rctl      │    left    │ down │  rght   │
+//    │    lctl    │  lgui  │  lalt  │        │          LT(UTIL_L4, spc)          │        │   ralt    │ MO(WIN_FN) │     rctl      │    left    │ down │  rght   │
 //    └────────────┴────────┴────────┘        └────────────────────────────────────┘        └───────────┴────────────┴───────────────┴────────────┴──────┴─────────┘
 [WIN_BASE] = LAYOUT_iso_85(
   KC_ESC     , KC_F1   , KC_F2   , KC_F3  , KC_F4  , KC_F5 , KC_F6 , KC_F7  , KC_F8  , KC_F9   , KC_F10    , KC_F11     , KC_F12              , TG(GAMING) , KC_DEL  , RGB_MOD,
@@ -237,7 +232,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TAB     , KC_Q    , KC_W    , KC_E   , KC_R   , KC_T  , KC_Y  , KC_U   , KC_I   , KC_O    , KC_P      , KC_LBRC    , KC_RBRC             ,               KC_ENT , KC_PGDN,
   MO(WIN_L3) , HOME_A  , HOME_S  , HOME_D , HOME_F , KC_G  , KC_H  , HOME_J , HOME_K , HOME_L  , HOME_SCLN , KC_QUOT    , LT(WIN_L3, KC_BSLS) ,                        KC_HOME,
   KC_LSFT    , KC_NUBS , KC_Z    , KC_X   , KC_C   , KC_V  , KC_B  , KC_N   , KC_M   , KC_COMM , KC_DOT    , KC_SLSH    ,                          KC_RSFT , KC_UP   , KC_END ,
-  KC_LCTL    , KC_LGUI , KC_LALT ,                           KC_SPC                  ,           KC_RALT   , MO(WIN_FN) , KC_RCTL             , KC_LEFT    , KC_DOWN , KC_RGHT
+  KC_LCTL    , KC_LGUI , KC_LALT ,                    LT(UTIL_L4, KC_SPC)            ,           KC_RALT   , MO(WIN_FN) , KC_RCTL             , KC_LEFT    , KC_DOWN , KC_RGHT
 ),
 
 //    ┌─────────┬──────────┬─────────┬─────────┬─────────┬─────────┬─────────┬─────────┬──────┬──────┬──────┬──────┬──────┬─────┬─────┬─────────┐
@@ -282,6 +277,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______ , DE_BSLS , DE_SLSH , DE_LCBR , DE_RCBR , DE_ASTR , DE_QUES  , DE_LPRN , DE_RPRN , DE_SCLN , DE_COLN , DE_AT   , _______ ,                     _______,
   _______ , _______ , DE_HASH , DE_DLR  , DE_PIPE , DE_TILD , BACKTICK , DE_PLUS , DE_PERC , DE_DQUO , DE_QUOT , _______ ,           _______ , _______ , _______,
   _______ , _______ , _______ ,                               _______                      ,           _______ , _______ , _______ , _______ , _______ , _______
+),
+
+//    ┌─────┬─────┬─────┬─────┬─────┬─────┬──────┬──────┬─────┬──────┬─────┬─────┬─────┬─────┬─────┬─────┐
+//    │     │     │     │     │     │     │      │      │     │      │     │     │     │     │     │     │
+//    ├─────┼─────┼─────┼─────┼─────┼─────┼──────┼──────┼─────┼──────┼─────┼─────┼─────┼─────┴─────┼─────┤
+//    │     │     │     │     │     │     │      │      │     │      │     │     │     │           │     │
+//    ├─────┼─────┼─────┼─────┼─────┼─────┼──────┼──────┼─────┼──────┼─────┼─────┼─────┼───────────┼─────┤
+//    │     │     │  1  │  2  │  3  │     │ left │ down │ up  │ rght │     │     │     │           │     │
+//    ├─────┼─────┼─────┼─────┼─────┼─────┼──────┼──────┼─────┼──────┼─────┼─────┼─────┼───────────┼─────┤
+//    │     │     │  4  │  5  │  6  │     │      │      │     │      │     │     │     │           │     │
+//    ├─────┼─────┼─────┼─────┼─────┼─────┼──────┼──────┼─────┼──────┼─────┼─────┼─────┴─────┬─────┼─────┤
+//    │     │     │  7  │  8  │  9  │  0  │      │      │     │      │     │     │           │     │     │
+//    ├─────┼─────┼─────┼─────┼─────┴─────┴──────┴──────┴─────┼──────┼─────┼─────┼─────┬─────┼─────┼─────┤
+//    │     │     │     │     │                               │      │     │     │     │     │     │     │
+//    └─────┴─────┴─────┘     └───────────────────────────────┘      └─────┴─────┴─────┴─────┴─────┴─────┘
+[UTIL_L4] = LAYOUT_iso_85(
+  _______ , _______ , _______ , _______ , _______ , _______ , _______ , _______ , _______ , _______  , _______ , _______ , _______ , _______ , _______ , _______,
+  _______ , _______ , _______ , _______ , _______ , _______ , _______ , _______ , _______ , _______  , _______ , _______ , _______ ,           _______ , _______,
+  _______ , _______ , KC_1    , KC_2    , KC_3    , _______ , KC_LEFT , KC_DOWN , KC_UP   , KC_RIGHT , _______ , _______ , _______ ,           _______ , _______,
+  _______ , _______ , KC_4    , KC_5    , KC_6    , _______ , _______ , _______ , _______ , _______  , _______ , _______ , _______ ,                     _______,
+  _______ , _______ , KC_7    , KC_8    , KC_9    , KC_0    , _______ , _______ , _______ , _______  , _______ , _______ ,           _______ , _______ , _______,
+  _______ , _______ , _______ ,                               _______                     ,            _______ , _______ , _______ , _______ , _______ , _______
 ),
 
 //    ┌──────┬──────┬──────┬────┬────┬────┬────┬────┬────┬────┬──────┬─────┬──────┬────────────┬──────┬─────────┐
